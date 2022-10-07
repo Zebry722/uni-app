@@ -1,5 +1,9 @@
 <template>
   <view>
+    <!-- 搜索组件 -->
+    <view class="search-box">
+          <my-search @click='gotoSearch'></my-search>
+    </view>
     <!-- 轮播图区域 -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
       <swiper-item v-for="(item , index) in swiperList" :key="index">
@@ -17,24 +21,26 @@
     </view>
     <!-- 分类导航区域end -->
     <!-- 楼层区域 -->
-    <view class="floor-list" >
+    <view class="floor-list">
       <view class="floot-item" v-for="(item,index) in floorList" :key="index">
         <image :src="item.floor_title.image_src" class="floor-title"></image>
-              <!-- 多图片区域 -->
-      <view class="floor-img-box">
-        <!-- 大图片 -->
-        <navigator class="floor-img-big" :url="item.product_list[0].url">
-          <image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}" mode="widthFix"></image>
-        </navigator>
-        <!-- 小图片 -->
-       <view class="floor-img-mini">
-          <navigator class="floor-img-tittle" v-for="(item1,index1) in item.product_list" :key="index1" v-if="index1 !==0" :url="item1.url">
-             <image :src="item1.image_src" mode="widthFix"  :style="{width: item1.image_width + 'rpx'}"></image>
+        <!-- 多图片区域 -->
+        <view class="floor-img-box">
+          <!-- 大图片 -->
+          <navigator class="floor-img-big" :url="item.product_list[0].url">
+            <image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}"
+              mode="widthFix"></image>
           </navigator>
+          <!-- 小图片 -->
+          <view class="floor-img-mini">
+            <navigator class="floor-img-tittle" v-for="(item1,index1) in item.product_list" :key="index1"
+              v-if="index1 !==0" :url="item1.url">
+              <image :src="item1.image_src" mode="widthFix" :style="{width: item1.image_width + 'rpx'}"></image>
+            </navigator>
+          </view>
         </view>
+        <!-- 多图片区域end -->
       </view>
-      <!-- 多图片区域end -->
-       </view>
     </view>
     <!-- 楼层区域end -->
   </view>
@@ -89,14 +95,19 @@
           data: res
         } = await uni.$http.get('/api/public/v1/home/floordata')
         // 对楼层数据进行处理
-        res.message.forEach(floor =>{
-          floor.product_list.forEach(plord =>{
-            plord.url='/subpkg/goods_list/goods_list?' +  plord.navigator_url.split('?')[1]
+        res.message.forEach(floor => {
+          floor.product_list.forEach(plord => {
+            plord.url = '/subpkg/goods_list/goods_list?' + plord.navigator_url.split('?')[1]
           })
         })
         if (res.meta.status !== 200) return uni.$showMsg()
         this.floorList = res.message
         // console.log(this.floorList)
+      },
+      gotoSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
       }
 
     }
@@ -123,22 +134,26 @@
       height: 140rpx;
     }
   }
-  
-  .floor-title{
+
+  .floor-title {
     height: 60rpx;
     width: 100%;
     display: flex;
   }
-  
-  .floor-img-box{
+
+  .floor-img-box {
     display: flex;
     padding-left: 10rpx;
-    .floor-img-mini{
+
+    .floor-img-mini {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
     }
   }
-  
-  
+  .search-box{
+    position: sticky;
+    top: 0;
+    z-index: 66;
+  }
 </style>

@@ -1,5 +1,7 @@
 <template>
   <view>
+    <my-search @click="gotoSearch"></my-search>
+    
     <view class="scroll-item">
       <!-- 左侧滑动栏 -->
       <scroll-view scroll-y="true" class="scroll-item-right" :style="{height:whiteScoroll + 'px'}">
@@ -42,7 +44,7 @@
     },
     onLoad() {
       const sysInfo = uni.getSystemInfoSync()
-      this.whiteScoroll = sysInfo.windowHeight
+      this.whiteScoroll = sysInfo.windowHeight -50
       this.getCateList()
     },
     methods:{
@@ -61,6 +63,11 @@
        uni.navigateTo({
          url:'/subpkg/goods_list/goods_list?cid=' + item.cat_id
        })
+     },
+     gotoSearch(){
+      uni.navigateTo({
+        url:'/subpkg/search/search'
+      })
      }
     }
   }
