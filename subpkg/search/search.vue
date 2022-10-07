@@ -82,7 +82,7 @@
         // this.historyList.unshift(this.keywords)
         // 对搜索历史持久化存储
         uni.setStorageSync('keywords',JSON.stringify( this.historyList))
-      }
+      },
       // 点击清空历史和本地数据
       goodsDelete(keywords){
         this.historyList=[]
