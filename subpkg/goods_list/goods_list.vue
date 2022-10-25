@@ -48,7 +48,7 @@
       },
       mustDetail(must) {
         uni.navigateTo({
-          url:'/subpkg/good_detail/good_detail?goods_id=' + must.goods_id
+          url: '/subpkg/good_detail/good_detail?goods_id=' + must.goods_id
         })
         // uni.navigateTo({
         //   url: '/subpkg/good_detail/good_detail?goods_id=' + must.goods_id
