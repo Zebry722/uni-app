@@ -23,7 +23,8 @@
       <!-- 列表区域 -->
       <view class="history-list">
         <!-- <uni-tag :text="item" v-for="(item,index) in historyList" :key="index"></uni-tag> -->
-        <uni-tag :text="item" :inverted="true"   v-for="(item,index) in historyList" :key="index"/>
+        <uni-tag :text="item" :inverted="true" v-for="(item,index) in historys" :key="index"
+          @click="gotoGoodList(item)" />
       </view>
     </view>
   </view>
@@ -43,7 +44,7 @@
       };
     },
     onLoad() {
-     this.historyList= JSON.parse(uni.getStorageSync('keywords') || '[]')
+      this.historyList = JSON.parse(uni.getStorageSync('keywords') || '[]')
     },
     methods: {
       // 输入框处理事件的处理函数
@@ -74,26 +75,31 @@
           url: '/subpkg/good_detail/good_detail?goods_id=' + item.goods_id
         })
       },
-      storageHistory(){
-        const set =new Set(this.historyList);
+      storageHistory() {
+        const set = new Set(this.historyList);
         set.delete(this.keywords)
         set.add(this.keywords)
-        this.historyList=Array.from(set)
+        this.historyList = Array.from(set)
         // this.historyList.unshift(this.keywords)
         // 对搜索历史持久化存储
-        uni.setStorageSync('keywords',JSON.stringify( this.historyList))
+        uni.setStorageSync('keywords', JSON.stringify(this.historyList))
       },
       // 点击清空历史和本地数据
-      goodsDelete(keywords){
-        this.historyList=[]
+      goodsDelete(keywords) {
+        this.historyList = []
         uni.setStorageSync('keywords', '[]')
+      },
+      gotoGoodList(kw) {
+        uni.navigateTo({
+          url: '/subpkg/goods_list/goods_list?query=' + kw
+        })
       }
     },
-   computed: {
-     historys() {
-       return [...this.historyList].reverse()
-     }
-   }
+    computed: {
+      historys() {
+        return [...this.historyList].reverse()
+      }
+    }
   }
 </script>
 
@@ -125,9 +131,11 @@
       }
     }
   }
-  .history-box{
-     padding:  0 15px;
-    .history-title{
+
+  .history-box {
+    padding: 0 15px;
+
+    .history-title {
       display: flex;
       justify-content: space-between;
       height: 40px;
@@ -135,13 +143,15 @@
       font-size: 13px;
       border-bottom: 1px solid #efefef;
     }
-    .history-list{
+
+    .history-list {
       display: flex;
       flex-wrap: wrap;
-      .uni-tag{
-       display: block;
-       margin-top: 15px;
-       margin-right: 15px;
+
+      .uni-tag {
+        display: block;
+        margin-top: 15px;
+        margin-right: 15px;
       }
     }
   }
